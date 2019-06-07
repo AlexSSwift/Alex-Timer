@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Foundation
+import AVFoundation
 
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
    
@@ -15,7 +17,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet weak var timeLabelView: UIView!
   
     var timer = Timer()
-    var time: String = "00:00:00"
     var currentHour = 00
     var currentMinute = 00
     var currentSecond = 00
@@ -25,6 +26,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
 
     @IBAction func startPauseResumeButtonPressed(_ sender: UIButton) {
+        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.action), userInfo: nil, repeats: true)
         timeLabelView.isHidden = false
         
@@ -32,8 +34,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
-     timer.invalidate()
+        timer.invalidate()
         timeLabelView.isHidden = true
+   
     }
     
     
@@ -75,9 +78,11 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         currentHour = hours[pickerView.selectedRow(inComponent: 0)]
         currentMinute = minutes[pickerView.selectedRow(inComponent: 1)]
         currentSecond = seconds[pickerView.selectedRow(inComponent: 2)]
-        let time = "\(self.currentHour):\(self.currentMinute):\(self.currentSecond)"
+        let time = String(format: "%02d:%02d:%02d", self.currentHour, self.currentMinute, self.currentSecond)
         timeLabel.text = time
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +100,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             if currentMinute != 00 {
                 currentMinute -= 1
                 currentSecond = 59
+            } else {
+                timer.invalidate()
+                AudioServicesPlayAlertSound(SystemSoundID(1304))
             }
         }
         if currentMinute == 00 {
@@ -104,9 +112,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             }
         }
         
-        let time = "\(self.currentHour):\(self.currentMinute):\(self.currentSecond)"
-        
-        
+        let time = String(format: "%02d:%02d:%02d", self.currentHour, self.currentMinute, self.currentSecond)
         timeLabel.text = time
     }
     
@@ -114,3 +120,41 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 
 }
 
+//
+//  PickerLabels.swift
+//  My Timer
+//
+//  Created by Luís Machado on 02/02/17.
+//  Copyright © 2017 LuisMachado. All rights reserved.
+//
+import Foundation
+import UIKit
+
+
+extension UIPickerView {
+    
+    func setPickerLabels(labels: [Int:UILabel], containedView: UIView) { // [component number:label]
+        
+        let fontSize:CGFloat = 20
+        let labelWidth:CGFloat = containedView.bounds.width / CGFloat(self.numberOfComponents)
+        let x:CGFloat = self.frame.origin.x
+        let y:CGFloat = (self.frame.size.height / 2) - (fontSize / 2)
+        
+        for i in 0...self.numberOfComponents {
+            
+            if let label = labels[i] {
+                
+                if self.subviews.contains(label) {
+                    label.removeFromSuperview()
+                }
+                
+                label.frame = CGRect(x: x + labelWidth * CGFloat(i), y: y, width: labelWidth, height: fontSize)
+                label.font = UIFont.boldSystemFont(ofSize: fontSize)
+                label.backgroundColor = .clear
+                label.textAlignment = NSTextAlignment.center
+                
+                self.addSubview(label)
+            }
+        }
+    }
+}
