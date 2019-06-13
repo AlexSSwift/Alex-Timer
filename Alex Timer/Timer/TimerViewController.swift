@@ -10,12 +10,17 @@ import UIKit
 import Foundation
 import AVFoundation
 
-class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class TimerViewContoller: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
    
     @IBOutlet weak var timerTimePicker: UIPickerView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var timeLabelView: UIView!
-  
+    @IBOutlet weak var hoursPickerLabel: UILabel!
+    @IBOutlet weak var minutesPickerLabel: UILabel!
+    @IBOutlet weak var secondsPickerLabel: UILabel!
+    @IBOutlet weak var pickerLabelView: UIView!
+    
+    
     var timer = Timer()
     var currentHour = 00
     var currentMinute = 00
@@ -27,7 +32,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 
     @IBAction func startPauseResumeButtonPressed(_ sender: UIButton) {
         
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.action), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
         timeLabelView.isHidden = false
         
         
@@ -59,7 +64,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-      //  let time: [[Int]] = [hours, minutes, seconds]
+     
 
         var numbers: String = ""
         if component == 0 {
@@ -132,6 +137,7 @@ import UIKit
 
 
 extension UIPickerView {
+    
     
     func setPickerLabels(labels: [Int:UILabel], containedView: UIView) { // [component number:label]
         
