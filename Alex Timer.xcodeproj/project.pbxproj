@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A1212E222BC341A00041619 /* Alarm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A1212E122BC341A00041619 /* Alarm.storyboard */; };
+		1A1212E422BC36CE00041619 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1212E322BC36CE00041619 /* AlarmTableViewCell.swift */; };
+		1A1212E622BC40C800041619 /* SetAlarmVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1212E522BC40C800041619 /* SetAlarmVC.swift */; };
 		1A7489E422A20FDB002787FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7489E322A20FDB002787FF /* AppDelegate.swift */; };
 		1A7489E622A20FDB002787FF /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7489E522A20FDB002787FF /* TimerViewController.swift */; };
 		1A7489E922A20FDB002787FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A7489E722A20FDB002787FF /* Main.storyboard */; };
@@ -38,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A1212E122BC341A00041619 /* Alarm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alarm.storyboard; sourceTree = "<group>"; };
+		1A1212E322BC36CE00041619 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
+		1A1212E522BC40C800041619 /* SetAlarmVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAlarmVC.swift; sourceTree = "<group>"; };
 		1A7489E022A20FDB002787FF /* Alex Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alex Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A7489E322A20FDB002787FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A7489E522A20FDB002787FF /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
@@ -105,8 +111,8 @@
 		1A7489E222A20FDB002787FF /* Alex Timer */ = {
 			isa = PBXGroup;
 			children = (
-				1A84060F22B2E6DB00D498EF /* Storyboards */,
 				1A7489E322A20FDB002787FF /* AppDelegate.swift */,
+				1A84060F22B2E6DB00D498EF /* Storyboards */,
 				1A84061422B2E98500D498EF /* Alarm */,
 				1A84061322B2E95C00D498EF /* Stopwatch */,
 				1A84061222B2E94300D498EF /* Timer */,
@@ -139,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				1A7489E722A20FDB002787FF /* Main.storyboard */,
+				1A1212E122BC341A00041619 /* Alarm.storyboard */,
 				1A84061022B2E70800D498EF /* Timer.storyboard */,
 			);
 			path = Storyboards;
@@ -165,6 +172,8 @@
 			isa = PBXGroup;
 			children = (
 				1A84061522B2E9B000D498EF /* AlarmViewContoller.swift */,
+				1A1212E322BC36CE00041619 /* AlarmTableViewCell.swift */,
+				1A1212E522BC40C800041619 /* SetAlarmVC.swift */,
 			);
 			path = Alarm;
 			sourceTree = "<group>";
@@ -276,6 +285,7 @@
 				1A84061122B2E70800D498EF /* Timer.storyboard in Resources */,
 				1A7489EE22A20FDC002787FF /* LaunchScreen.storyboard in Resources */,
 				1A7489EB22A20FDC002787FF /* Assets.xcassets in Resources */,
+				1A1212E222BC341A00041619 /* Alarm.storyboard in Resources */,
 				1A7489E922A20FDB002787FF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +315,9 @@
 				1A84061622B2E9B000D498EF /* AlarmViewContoller.swift in Sources */,
 				1A84061822B2E9F800D498EF /* StopwatchViewController.swift in Sources */,
 				1A7489E622A20FDB002787FF /* TimerViewController.swift in Sources */,
+				1A1212E622BC40C800041619 /* SetAlarmVC.swift in Sources */,
 				1A7489E422A20FDB002787FF /* AppDelegate.swift in Sources */,
+				1A1212E422BC36CE00041619 /* AlarmTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
