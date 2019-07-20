@@ -36,6 +36,14 @@ class WhenTimerEndsView: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        WhenTimerEndsTableView.dataSource = self
+        WhenTimerEndsTableView.delegate = self
+        
+    }
+    
     
     
     
