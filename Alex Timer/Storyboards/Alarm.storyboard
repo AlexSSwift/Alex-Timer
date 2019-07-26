@@ -57,14 +57,14 @@
                                                         <action selector="alarmActiveSwitch:" destination="ddF-K9-5gY" eventType="valueChanged" id="MXX-q5-gDw"/>
                                                     </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="AlarmName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aej-Vf-0lB">
-                                                    <rect key="frame" x="43" y="57" width="79.5" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AlarmName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aej-Vf-0lB">
+                                                    <rect key="frame" x="16" y="57" width="79.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="RepeatWhen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8g8-Db-sNS">
-                                                    <rect key="frame" x="131" y="57" width="284" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RepeatWhen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8g8-Db-sNS">
+                                                    <rect key="frame" x="310.5" y="57" width="87.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -80,18 +80,20 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Aej-Vf-0lB" secondAttribute="bottom" constant="15.5" id="1ah-9I-4nG"/>
                                                 <constraint firstItem="N9v-wB-pB3" firstAttribute="top" secondItem="6lO-yY-lOG" secondAttribute="top" id="2Pb-L6-3UX"/>
+                                                <constraint firstAttribute="bottom" secondItem="8g8-Db-sNS" secondAttribute="bottom" constant="15.5" id="5YC-J1-zBM"/>
                                                 <constraint firstItem="Aej-Vf-0lB" firstAttribute="top" secondItem="Gg5-Q4-cPZ" secondAttribute="bottom" constant="8" id="6xs-Td-mzZ"/>
                                                 <constraint firstItem="Gg5-Q4-cPZ" firstAttribute="top" secondItem="6lO-yY-lOG" secondAttribute="top" id="925-lF-hUa"/>
-                                                <constraint firstAttribute="trailing" secondItem="8g8-Db-sNS" secondAttribute="trailing" constant="-1" id="Dmx-HN-5c5"/>
-                                                <constraint firstItem="8g8-Db-sNS" firstAttribute="leading" secondItem="Aej-Vf-0lB" secondAttribute="trailing" constant="8" id="Lbs-1t-fwX"/>
+                                                <constraint firstItem="8g8-Db-sNS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Aej-Vf-0lB" secondAttribute="trailing" constant="8" id="Lbs-1t-fwX"/>
                                                 <constraint firstItem="Gg5-Q4-cPZ" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="43" id="N91-vI-mQm"/>
                                                 <constraint firstAttribute="trailing" secondItem="N9v-wB-pB3" secondAttribute="trailing" constant="11" id="TEI-P3-b0n"/>
                                                 <constraint firstAttribute="bottom" secondItem="N9v-wB-pB3" secondAttribute="bottom" constant="59.5" id="bRX-uK-bya"/>
+                                                <constraint firstAttribute="trailing" secondItem="8g8-Db-sNS" secondAttribute="trailing" constant="16" id="cH3-TD-hrm"/>
                                                 <constraint firstItem="8g8-Db-sNS" firstAttribute="top" secondItem="Gg5-Q4-cPZ" secondAttribute="bottom" constant="8" id="gA1-Bb-iRd"/>
                                                 <constraint firstItem="N9v-wB-pB3" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="354" id="muk-nO-7dG"/>
                                                 <constraint firstAttribute="trailing" secondItem="Gg5-Q4-cPZ" secondAttribute="trailing" constant="68" id="pZG-zg-gkU"/>
-                                                <constraint firstItem="Aej-Vf-0lB" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="43" id="s1t-Y8-blP"/>
+                                                <constraint firstItem="Aej-Vf-0lB" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="16" id="znX-0f-P61"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

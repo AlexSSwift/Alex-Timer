@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import AVFoundation
 
 struct alarm {
-    var time: String
+    var time: Date
     var reset: [Bool]
     var label: String
     
@@ -19,13 +20,29 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var alarmTableView: UITableView!
     var timer = Timer()
-    let calendar = Calendar.current
-    let rightNow = Date()
+    
+   
     
     
     // Alarm Data and Functions
     var alarms: [alarm] = []
-    var alarmDict: [[String:String]] = []
+    //var alarmDict: [[String:String]] = []
+   
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        alarmTableView.delegate = self
+        alarmTableView.dataSource = self
+        alarmTimer()
+    }
+    
+    func rightNow() -> Date {
+        let calendar = Calendar.current
+        var todaysDate = Date()
+        let dateReduced = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: todaysDate)
+        todaysDate = calendar.date(from: dateReduced)!
+        return todaysDate
+    }
     
     func alarmTimer() {
         
@@ -34,15 +51,18 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func action() {
-        
+        let now = rightNow()
+        for alarm in alarms {
+            if alarm.time == now {
+                AudioServicesPlayAlertSound(SystemSoundID(1304))
+            }
+            
+        }
     }
     
     func addAlarm(date: Date, reset: [Bool], label: String) {
-        let formater = DateFormatter()
-        formater.dateFormat = "h:mm a"
-        let formatedDate = formater.string(from: date)
-        
-        alarms.append(alarm(time: formatedDate, reset: reset, label: label))
+ 
+        alarms.append(alarm(time: date, reset: reset, label: label))
         alarmTableView.reloadData()
     }
     
@@ -51,13 +71,56 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         var dict: [String:String] = [:]
         
         for alarm in alarmArray {
-            dict["time"] = "\(alarm.time)"
-            dict["reset"] = "\(alarm.reset)"
-            dict["label"] = "\(alarm.label)"
+            dict["time"] = dateToString(date: alarm.time)
+            dict["reset"] = "\(parseRepeats(repeatArray: alarm.reset))"
+            dict["label"] = alarm.label
             returnDictArray.append(dict)
         }
         
         return returnDictArray
+    }
+    
+    func parseRepeats(repeatArray: [Bool]) -> [String] {
+        var weekdays: [String] = []
+        var weekday = 0
+        func switchWeekdays(weekday: Int) -> String {
+            switch weekday {
+            case 0:
+                return "Sun"
+            case 1:
+                return "Mon"
+            case 2:
+                return "Tue"
+            case 3:
+                return "Wed"
+            case 4:
+                return "Thu"
+            case 5:
+                return "Fri"
+            case 6:
+                return "Sat"
+            default:
+                return ""
+            }
+        }
+        
+        for (index, day) in repeatArray.enumerated() {
+            if day == true {
+                weekday = index
+                let switchedDays = switchWeekdays(weekday: weekday)
+                weekdays.append(switchedDays)
+            }
+        }
+        return weekdays
+    }
+    
+    
+    func dateToString(date: Date) -> String {
+        let formater = DateFormatter()
+        formater.dateFormat = "h:mm a"
+        let formatedDate = formater.string(from: date)
+        
+        return formatedDate
     }
     
     
@@ -75,14 +138,7 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        alarmTableView.delegate = self
-        alarmTableView.dataSource = self
-        
-    }
-    
+
     @IBAction func addAlarm(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "SetAlarmVC")

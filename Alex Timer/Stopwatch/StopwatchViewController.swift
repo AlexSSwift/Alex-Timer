@@ -18,21 +18,47 @@ class StopwatchViewController: UIViewController {
     let hours = Array(0...23)
     let minutes = Array(0...59)
     let seconds = Array(0...59)
+    enum startPauseResume {case start, pause, resume}
+    var buttonStatus:startPauseResume = startPauseResume.start
+    @IBOutlet weak var startButtonProperties: UIButton!
     
     @IBAction func startStopButtonPressed(_ sender: Any) {
-        
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.action), userInfo: nil, repeats: true)
-        
+       timerRun()
     }
     
     @IBAction func resetButtonPressed(_ sender: UIButton) {
-    timer.invalidate()
+        timer.invalidate()
+        let time = String(format: "%02d:%02d:%02d", 0, 0, 0)
+        stopwatchTimeLabel.text = time
+        buttonStatus = startPauseResume.start
+        currentHour = 0
+        currentMinute = 0
+        currentSecond = 0
+        startButtonProperties.setTitle(_: "Start", for: UIControl.State.normal)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+        func timerRun() {
+    
+            if buttonStatus == startPauseResume.start {
+                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
+                startButtonProperties.setTitle(_: "Pause", for: UIControl.State.normal)
+                buttonStatus = startPauseResume.pause
+            } else if buttonStatus == startPauseResume.pause {
+                timer.invalidate()
+                startButtonProperties.setTitle(_: "Resume", for: UIControl.State.normal)
+                buttonStatus = startPauseResume.resume
+            } else if buttonStatus == startPauseResume.resume {
+                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
+                startButtonProperties.setTitle(_: "Pause", for: UIControl.State.normal)
+                buttonStatus = startPauseResume.pause
+            }
+    
+        }
     
     @objc func action() {
         currentSecond += 1
@@ -51,6 +77,5 @@ class StopwatchViewController: UIViewController {
         let time = String(format: "%02d:%02d:%02d", self.currentHour, self.currentMinute, self.currentSecond)
         stopwatchTimeLabel.text = time
     }
-    
-    
+ 
 }

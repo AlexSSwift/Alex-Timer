@@ -13,7 +13,7 @@ class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     var repeatClosure: (([Bool]) -> Void)!
     
-    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    let days = ["Every Sunday", "Every Monday", "Every Tuesday", "Every Wednesday", "Every Thursday", "Every Friday", "Every Saturday"]
     var daysChecked = [false, false, false, false, false, false, false]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

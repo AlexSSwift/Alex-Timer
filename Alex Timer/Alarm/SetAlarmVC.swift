@@ -17,7 +17,7 @@ class SetAlarmVC: UIViewController {
     }
     //    var resetClosure: (([Bool]) -> Void)!
     var setDate: Date = Date()
-    var setReset: [Bool] = []
+    var setReset: [Bool] = [false, false, false, false, false, false, false, ]
     var setLabel: String = "Alarm"
     
     override func viewDidLoad() {
@@ -27,6 +27,8 @@ class SetAlarmVC: UIViewController {
     
     
     @IBAction func saveButtonPressed(_ sender: Any) {
+        setDate = alarmDatePicker.date
+        print(setDate)
         setAlarmClosure(setDate, setReset, setLabel)
         
         self.dismiss(animated: true, completion: nil)

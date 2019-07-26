@@ -18,42 +18,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lbl-X7-sQh">
-                                <rect key="frame" x="63" y="368" width="55" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Resume"/>
-                                <connections>
-                                    <action selector="resetButtonPressed:" destination="FHv-c5-SHU" eventType="touchUpInside" id="s02-hP-dwc"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftq-HA-Cgn">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftq-HA-Cgn">
                                 <rect key="frame" x="20" y="180" width="374" height="124"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="93"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Stopwatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48V-9w-Nzy">
-                                <rect key="frame" x="20" y="44" width="374" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stopwatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48V-9w-Nzy">
+                                <rect key="frame" x="144" y="44" width="126.5" height="54"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uw3-4K-MV6">
-                                <rect key="frame" x="305" y="368" width="34" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uw3-4K-MV6">
+                                <rect key="frame" x="272" y="368" width="34" height="30"/>
                                 <state key="normal" title="Start"/>
                                 <connections>
                                     <action selector="startStopButtonPressed:" destination="FHv-c5-SHU" eventType="touchUpInside" id="Oh8-6Q-uXe"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lbl-X7-sQh">
+                                <rect key="frame" x="95" y="368" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="resetButtonPressed:" destination="FHv-c5-SHU" eventType="touchUpInside" id="s02-hP-dwc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Lbl-X7-sQh" firstAttribute="leading" secondItem="ZDj-Ms-LAL" secondAttribute="leading" constant="95" id="6I9-BO-8Bl"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="bottom" secondItem="Lbl-X7-sQh" secondAttribute="bottom" constant="415" id="CMC-Xj-0O0"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="trailing" secondItem="Lbl-X7-sQh" secondAttribute="trailing" constant="271" id="GhZ-Fe-dbN"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="trailing" secondItem="uw3-4K-MV6" secondAttribute="trailing" constant="108" id="Kom-0Z-YYV"/>
+                            <constraint firstItem="48V-9w-Nzy" firstAttribute="leading" secondItem="ZDj-Ms-LAL" secondAttribute="leading" constant="144" id="Nh7-gU-xpx"/>
+                            <constraint firstItem="uw3-4K-MV6" firstAttribute="top" secondItem="ftq-HA-Cgn" secondAttribute="bottom" constant="64" id="Ufw-9w-TJI"/>
+                            <constraint firstItem="uw3-4K-MV6" firstAttribute="leading" secondItem="ZDj-Ms-LAL" secondAttribute="leading" constant="272" id="V50-TZ-GVb"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="bottom" secondItem="uw3-4K-MV6" secondAttribute="bottom" constant="415" id="Wb4-n8-cj9"/>
+                            <constraint firstItem="ftq-HA-Cgn" firstAttribute="leading" secondItem="ZDj-Ms-LAL" secondAttribute="leading" constant="20" id="Yxh-qi-gk0"/>
+                            <constraint firstItem="ftq-HA-Cgn" firstAttribute="top" secondItem="ZDj-Ms-LAL" secondAttribute="top" constant="136" id="ZJz-m5-pBj"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="bottom" secondItem="48V-9w-Nzy" secondAttribute="bottom" constant="715" id="ZQD-aS-zbX"/>
+                            <constraint firstItem="Lbl-X7-sQh" firstAttribute="top" secondItem="ftq-HA-Cgn" secondAttribute="bottom" constant="64" id="c6d-jf-ofF"/>
+                            <constraint firstItem="48V-9w-Nzy" firstAttribute="top" secondItem="ZDj-Ms-LAL" secondAttribute="top" id="gfW-e1-kRo"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="trailing" secondItem="ftq-HA-Cgn" secondAttribute="trailing" constant="20" id="irh-v7-6fh"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="trailing" secondItem="48V-9w-Nzy" secondAttribute="trailing" constant="143.5" id="qqi-Ye-YHz"/>
+                            <constraint firstItem="ZDj-Ms-LAL" firstAttribute="bottom" secondItem="ftq-HA-Cgn" secondAttribute="bottom" constant="509" id="w26-vP-loe"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="ZDj-Ms-LAL"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Stopwatch" image="stopwatch" selectedImage="stopwatch" id="XnB-FG-Lh4"/>
                     <connections>
+                        <outlet property="startButtonProperties" destination="uw3-4K-MV6" id="voC-dD-536"/>
                         <outlet property="stopwatchTimeLabel" destination="ftq-HA-Cgn" id="RjS-LK-21r"/>
                     </connections>
                 </viewController>
