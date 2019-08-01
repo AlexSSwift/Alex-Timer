@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Alarm-->
+        <!--AlarmVC-->
         <scene sceneID="D5d-ER-Lx8">
             <objects>
-                <viewController id="9mz-vZ-JaP" customClass="AlarmViewContoller" customModule="Alex_Timer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AlarmVC" title="AlarmVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9mz-vZ-JaP" customClass="AlarmViewContoller" customModule="Alex_Timer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Pxr-p4-DxW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -48,15 +48,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="90.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N9v-wB-pB3">
-                                                    <rect key="frame" x="354" y="0.0" width="51" height="31"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="49" id="h7H-v5-4Pk"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <action selector="alarmActiveSwitch:" destination="ddF-K9-5gY" eventType="valueChanged" id="MXX-q5-gDw"/>
-                                                    </connections>
-                                                </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AlarmName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aej-Vf-0lB">
                                                     <rect key="frame" x="16" y="57" width="79.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
@@ -70,7 +61,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time 0:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gg5-Q4-cPZ">
-                                                    <rect key="frame" x="43" y="0.0" width="303" height="49"/>
+                                                    <rect key="frame" x="16" y="0.0" width="153.5" height="49"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="49" id="WZV-kS-p9m"/>
                                                     </constraints>
@@ -78,21 +69,30 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N9v-wB-pB3">
+                                                    <rect key="frame" x="349" y="18" width="51" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="49" id="h7H-v5-4Pk"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <action selector="alarmSwitch:" destination="ddF-K9-5gY" eventType="valueChanged" id="6Cz-Dv-bAC"/>
+                                                    </connections>
+                                                </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Aej-Vf-0lB" secondAttribute="bottom" constant="15.5" id="1ah-9I-4nG"/>
-                                                <constraint firstItem="N9v-wB-pB3" firstAttribute="top" secondItem="6lO-yY-lOG" secondAttribute="top" id="2Pb-L6-3UX"/>
+                                                <constraint firstItem="N9v-wB-pB3" firstAttribute="top" secondItem="6lO-yY-lOG" secondAttribute="top" constant="18" id="2Pb-L6-3UX"/>
                                                 <constraint firstAttribute="bottom" secondItem="8g8-Db-sNS" secondAttribute="bottom" constant="15.5" id="5YC-J1-zBM"/>
                                                 <constraint firstItem="Aej-Vf-0lB" firstAttribute="top" secondItem="Gg5-Q4-cPZ" secondAttribute="bottom" constant="8" id="6xs-Td-mzZ"/>
+                                                <constraint firstItem="Gg5-Q4-cPZ" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="16" id="7fo-dD-trm"/>
                                                 <constraint firstItem="Gg5-Q4-cPZ" firstAttribute="top" secondItem="6lO-yY-lOG" secondAttribute="top" id="925-lF-hUa"/>
                                                 <constraint firstItem="8g8-Db-sNS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Aej-Vf-0lB" secondAttribute="trailing" constant="8" id="Lbs-1t-fwX"/>
-                                                <constraint firstItem="Gg5-Q4-cPZ" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="43" id="N91-vI-mQm"/>
-                                                <constraint firstAttribute="trailing" secondItem="N9v-wB-pB3" secondAttribute="trailing" constant="11" id="TEI-P3-b0n"/>
-                                                <constraint firstAttribute="bottom" secondItem="N9v-wB-pB3" secondAttribute="bottom" constant="59.5" id="bRX-uK-bya"/>
+                                                <constraint firstAttribute="trailing" secondItem="N9v-wB-pB3" secondAttribute="trailing" constant="16" id="TEI-P3-b0n"/>
+                                                <constraint firstAttribute="bottom" secondItem="N9v-wB-pB3" secondAttribute="bottom" constant="41.5" id="bRX-uK-bya"/>
                                                 <constraint firstAttribute="trailing" secondItem="8g8-Db-sNS" secondAttribute="trailing" constant="16" id="cH3-TD-hrm"/>
                                                 <constraint firstItem="8g8-Db-sNS" firstAttribute="top" secondItem="Gg5-Q4-cPZ" secondAttribute="bottom" constant="8" id="gA1-Bb-iRd"/>
-                                                <constraint firstItem="N9v-wB-pB3" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="354" id="muk-nO-7dG"/>
-                                                <constraint firstAttribute="trailing" secondItem="Gg5-Q4-cPZ" secondAttribute="trailing" constant="68" id="pZG-zg-gkU"/>
+                                                <constraint firstItem="N9v-wB-pB3" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="349" id="muk-nO-7dG"/>
+                                                <constraint firstAttribute="trailing" secondItem="Gg5-Q4-cPZ" secondAttribute="trailing" constant="244.5" id="tYW-gW-J56"/>
                                                 <constraint firstItem="Aej-Vf-0lB" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="16" id="znX-0f-P61"/>
                                             </constraints>
                                         </tableViewCellContentView>

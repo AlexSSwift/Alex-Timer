@@ -8,10 +8,11 @@
 
 import UIKit
 import AVFoundation
+import UserNotifications
 
-struct alarm {
+struct Alarm {
     var time: Date
-    var reset: [Bool]
+    var resetDays: [Bool]
     var label: String
     
 }
@@ -20,59 +21,82 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var alarmTableView: UITableView!
     var timer = Timer()
-    
-   
-    
+    let defaults = UserDefaults.standard
+  
     
     // Alarm Data and Functions
-    var alarms: [alarm] = []
+    var alarms: [Alarm] = []
     //var alarmDict: [[String:String]] = []
    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        retrieveDefaultAlarms()
         alarmTableView.delegate = self
         alarmTableView.dataSource = self
-        alarmTimer()
     }
     
-    func rightNow() -> Date {
-        let calendar = Calendar.current
-        var todaysDate = Date()
-        let dateReduced = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: todaysDate)
-        todaysDate = calendar.date(from: dateReduced)!
-        return todaysDate
-    }
-    
-    func alarmTimer() {
+    func activateAlarm(alarms: [Alarm]) {
         
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AlarmViewContoller.action), userInfo: nil, repeats: true)
-        
-    }
-    
-    @objc func action() {
-        let now = rightNow()
         for alarm in alarms {
-            if alarm.time == now {
-                AudioServicesPlayAlertSound(SystemSoundID(1304))
+            let content = UNMutableNotificationContent()
+            content.title = "Now"
+            content.body = alarm.label
+            let calendar = Calendar.current
+            let alarmHour = alarm.time.hashValue
+            let alarmMinute = alarm.time.hashValue
+            var resetStatus: Bool = false
+            for day in alarm.resetDays {
+                if day == true {
+                    resetStatus = true
+                }
             }
             
+            if resetStatus == true {
+                for day in alarm.resetDays {
+                    var dateComponents = DateComponents()
+                    dateComponents.calendar = calendar
+                    if day == true {
+                        dateComponents.weekday = alarm.resetDays.count
+                    }
+                    dateComponents.hour = alarmHour
+                    dateComponents.minute = alarmMinute
+                    alarmTrigger(content: content, dateComponents: dateComponents, reset: resetStatus)
+                }
+            } else {
+                var dateComponents = DateComponents()
+                dateComponents.calendar = calendar
+            //day??
+                dateComponents.hour = alarmHour
+                dateComponents.minute = alarmMinute
+                alarmTrigger(content: content, dateComponents: dateComponents, reset: resetStatus)
+            }
         }
     }
     
-    func addAlarm(date: Date, reset: [Bool], label: String) {
- 
-        alarms.append(alarm(time: date, reset: reset, label: label))
+    func alarmTrigger(content: UNMutableNotificationContent, dateComponents: DateComponents, reset: Bool) {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in }
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: reset)
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        center.add(request) { (error) in }
+        
+    }
+    
+    func addAlarm(date: Date, resetDays: [Bool], label: String) {
+        alarms.append(Alarm(time: date, resetDays: resetDays, label: label))
+        activateAlarm(alarms: alarms)
         alarmTableView.reloadData()
     }
     
-    func parseAlarms(alarmArray: [alarm]) -> [[String:String]] {
+    func parseAlarms(alarmArray: [Alarm]) -> [[String:String]] {
         var returnDictArray: [[String:String]] = []
         var dict: [String:String] = [:]
         
         for alarm in alarmArray {
             dict["time"] = dateToString(date: alarm.time)
-            dict["reset"] = "\(parseRepeats(repeatArray: alarm.reset))"
+            dict["reset"] = "\(parseRepeats(repeatArray: alarm.resetDays))"
             dict["label"] = alarm.label
             returnDictArray.append(dict)
         }
@@ -103,7 +127,6 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
                 return ""
             }
         }
-        
         for (index, day) in repeatArray.enumerated() {
             if day == true {
                 weekday = index
@@ -114,6 +137,17 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         return weekdays
     }
     
+    func repeatToDateComp(repeatArray: [Bool]) -> [DateComponents] {
+        let calendar = Calendar.current
+        var repeatDays: [DateComponents] = []
+        for day in repeatArray {
+            if day == true {
+                let day = DateComponents(calendar: calendar, day: repeatArray.count)
+                repeatDays.append(day)
+            }
+        }
+        return repeatDays
+    }
     
     func dateToString(date: Date) -> String {
         let formater = DateFormatter()
@@ -123,6 +157,29 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         return formatedDate
     }
     
+    func parseAlarmsForDefault(alarmArray: [Alarm]) -> [[String:Any]] {
+        var returnDictArray: [[String:Any]] = []
+        var dict: [String:Any] = [:]
+        
+        for alarm in alarmArray {
+            dict["time"] = alarm.time
+            dict["reset"] = alarm.resetDays
+            dict["label"] = alarm.label
+            returnDictArray.append(dict)
+        }
+        
+        return returnDictArray
+    }
+    
+    func retrieveDefaultAlarms() {
+        guard let defaultAlarms = defaults.array(forKey: "alarms") as! [[String:Any]]? else {
+            return
+        }
+
+        for defaultAlarm in defaultAlarms {
+            addAlarm(date: defaultAlarm["time"] as! Date, resetDays: defaultAlarm["reset"] as! [Bool], label: defaultAlarm["label"] as! String)
+        }
+    }
     
     // Table View functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -138,7 +195,6 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-
     @IBAction func addAlarm(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "SetAlarmVC")
@@ -147,7 +203,7 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         self.present(setAlarmVC, animated: true, completion: nil)
         
         setAlarmVC.setAlarmClosure = {
-            self.addAlarm(date: $0, reset: $1, label: $2)
+            self.addAlarm(date: $0, resetDays: $1, label: $2)
             
         }
     }

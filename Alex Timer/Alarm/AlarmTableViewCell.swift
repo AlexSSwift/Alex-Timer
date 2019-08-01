@@ -14,14 +14,14 @@ class AlarmTableViewCell: UITableViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var alarmName: UILabel!
     @IBOutlet weak var repeatWhenLabel: UILabel!
+    @IBAction func alarmSwitch(_ sender: UISwitch) {
+    }
     
     func setAlarmCell(time: String, repeatDays: String, label: String) {
         timeLabel.text = time
         repeatWhenLabel.text = repeatDays
         alarmName.text = label
     }
-    @IBAction func alarmActiveSwitch(_ sender: Any) {
-    }
-    
+ 
     
 }
