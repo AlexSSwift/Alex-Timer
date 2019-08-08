@@ -14,13 +14,12 @@ struct Alarm {
     var time: Date
     var resetDays: [Bool]
     var label: String
-    
 }
 
 class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var alarmTableView: UITableView!
-    var timer = Timer()
+  //  var timer = Timer()
     let defaults = UserDefaults.standard
   
     
@@ -43,6 +42,7 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
             content.title = "Now"
             content.body = alarm.label
             let calendar = Calendar.current
+            let alarmDay = alarm.time.hashValue
             let alarmHour = alarm.time.hashValue
             let alarmMinute = alarm.time.hashValue
             var resetStatus: Bool = false
@@ -63,10 +63,10 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
                     dateComponents.minute = alarmMinute
                     alarmTrigger(content: content, dateComponents: dateComponents, reset: resetStatus)
                 }
-            } else {
+            } else if resetStatus == false {
                 var dateComponents = DateComponents()
                 dateComponents.calendar = calendar
-            //day??
+                dateComponents.day = alarmDay
                 dateComponents.hour = alarmHour
                 dateComponents.minute = alarmMinute
                 alarmTrigger(content: content, dateComponents: dateComponents, reset: resetStatus)
@@ -76,11 +76,23 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
     
     func alarmTrigger(content: UNMutableNotificationContent, dateComponents: DateComponents, reset: Bool) {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in }
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if granted == true {
+                print("Authorization granted")
+            }
+            if error != nil {
+                print("There was an error getting authorization")
+            }
+            
+        }
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: reset)
         let uuidString = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-        center.add(request) { (error) in }
+        center.add(request) { (error) in
+            if error != nil {
+                print("error: could not add alarm trigger")
+            }
+        }
         
     }
     
@@ -179,6 +191,7 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         for defaultAlarm in defaultAlarms {
             addAlarm(date: defaultAlarm["time"] as! Date, resetDays: defaultAlarm["reset"] as! [Bool], label: defaultAlarm["label"] as! String)
         }
+        alarmTableView.reloadData()
     }
     
     // Table View functions

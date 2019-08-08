@@ -46,6 +46,7 @@
 		1A1212E122BC341A00041619 /* Alarm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alarm.storyboard; sourceTree = "<group>"; };
 		1A1212E322BC36CE00041619 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		1A1212E522BC40C800041619 /* SetAlarmVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAlarmVC.swift; sourceTree = "<group>"; };
+		1A4083B422F50A1A009D1504 /* Alex Timer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Alex Timer.entitlements"; sourceTree = "<group>"; };
 		1A7489E022A20FDB002787FF /* Alex Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alex Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A7489E322A20FDB002787FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A7489E522A20FDB002787FF /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 		1A7489E222A20FDB002787FF /* Alex Timer */ = {
 			isa = PBXGroup;
 			children = (
+				1A4083B422F50A1A009D1504 /* Alex Timer.entitlements */,
 				1A7489E322A20FDB002787FF /* AppDelegate.swift */,
 				1A84060F22B2E6DB00D498EF /* Storyboards */,
 				1A84061422B2E98500D498EF /* Alarm */,
@@ -252,6 +254,11 @@
 				TargetAttributes = {
 					1A7489DF22A20FDB002787FF = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					1A7489F322A20FDC002787FF = {
 						CreatedOnToolsVersion = 10.2;
@@ -500,6 +507,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Alex Timer/Alex Timer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5U3KXRCRTK;
 				INFOPLIST_FILE = "Alex Timer/Info.plist";
@@ -518,6 +526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Alex Timer/Alex Timer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5U3KXRCRTK;
 				INFOPLIST_FILE = "Alex Timer/Info.plist";

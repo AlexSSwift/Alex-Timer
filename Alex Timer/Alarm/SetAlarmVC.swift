@@ -28,7 +28,7 @@ class SetAlarmVC: UIViewController {
     
     @IBAction func saveButtonPressed(_ sender: Any) {
         setDate = alarmDatePicker.date
-        let dateReduced = Calendar.current.dateComponents([.hour, .minute], from: setDate)
+        let dateReduced = Calendar.current.dateComponents([.day, .hour, .minute], from: setDate)
         setDate = Calendar.current.date(from: dateReduced)!
         setAlarmClosure(setDate, setReset, setLabel)
         
