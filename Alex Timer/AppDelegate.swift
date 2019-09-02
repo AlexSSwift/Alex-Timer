@@ -8,25 +8,55 @@
 
 import UIKit
 
+let alarmHandler = AlarmHandler()
+
+class AlarmHandler {
+    
+    fileprivate init(){
+        
+    }
+    
+   var alarmsForDefault:[Alarm] = []
+    
+    func parseAlarmsForDefault(alarmArray: [Alarm]) -> [[String:Any]] {
+        var returnDictArray: [[String:Any]] = []
+        var dict: [String:Any] = [:]
+        
+        for alarm in alarmArray {
+            dict["time"] = alarm.time
+            dict["reset"] = alarm.resetDays
+            dict["label"] = alarm.label
+            dict["identifier"] = alarm.identifier
+            dict["active"] = alarm.active
+            
+            returnDictArray.append(dict)
+        }
+        
+        return returnDictArray
+    }
+    
+//    func retrieveAlarms(alarmArray:[Alarm]) {
+//        alarmsForDefault = alarmArray
+//    }
+
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        
-        let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "AlarmVC")
-        let AlarmVC = viewController as! AlarmViewContoller
-        
-        AlarmVC.defaults.set(AlarmVC.parseAlarmsForDefault(alarmArray: AlarmVC.alarms), forKey: "alarms")
+        UserDefaults.standard.removeObject(forKey: "alarms")
+        UserDefaults.standard.set(alarmHandler.parseAlarmsForDefault(alarmArray: alarmHandler.alarmsForDefault), forKey: "alarms")
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {

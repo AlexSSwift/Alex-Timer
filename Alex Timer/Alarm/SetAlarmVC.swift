@@ -12,7 +12,7 @@ class SetAlarmVC: UIViewController {
     
     @IBOutlet weak var alarmDatePicker: UIDatePicker!
     
-    var setAlarmClosure: (Date, [Bool], String) -> (Void) = {_,_,_ in 
+    var setAlarmClosure: (Date, [Bool], String, Bool, String) -> (Void) = {_,_,_,_,_  in
         
     }
     //    var resetClosure: (([Bool]) -> Void)!
@@ -29,7 +29,9 @@ class SetAlarmVC: UIViewController {
     @IBAction func saveButtonPressed(_ sender: Any) {
         setDate = alarmDatePicker.date
         print("first set date is: \(String(describing: setDate))")
-        setAlarmClosure(setDate, setReset, setLabel)
+        let setActive = true
+        let setIdentifier = UUID().uuidString
+        setAlarmClosure(setDate, setReset, setLabel, setActive, setIdentifier)
         
         self.dismiss(animated: true, completion: nil)
     }

@@ -48,13 +48,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="90.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AlarmName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aej-Vf-0lB">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AlarmName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aej-Vf-0lB">
                                                     <rect key="frame" x="16" y="57" width="79.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RepeatWhen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8g8-Db-sNS">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RepeatWhen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8g8-Db-sNS">
                                                     <rect key="frame" x="310.5" y="57" width="87.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <nil key="textColor"/>
@@ -88,7 +88,6 @@
                                                 <constraint firstItem="Gg5-Q4-cPZ" firstAttribute="top" secondItem="6lO-yY-lOG" secondAttribute="top" id="925-lF-hUa"/>
                                                 <constraint firstItem="8g8-Db-sNS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Aej-Vf-0lB" secondAttribute="trailing" constant="8" id="Lbs-1t-fwX"/>
                                                 <constraint firstAttribute="trailing" secondItem="N9v-wB-pB3" secondAttribute="trailing" constant="16" id="TEI-P3-b0n"/>
-                                                <constraint firstAttribute="bottom" secondItem="N9v-wB-pB3" secondAttribute="bottom" constant="41.5" id="bRX-uK-bya"/>
                                                 <constraint firstAttribute="trailing" secondItem="8g8-Db-sNS" secondAttribute="trailing" constant="16" id="cH3-TD-hrm"/>
                                                 <constraint firstItem="8g8-Db-sNS" firstAttribute="top" secondItem="Gg5-Q4-cPZ" secondAttribute="bottom" constant="8" id="gA1-Bb-iRd"/>
                                                 <constraint firstItem="N9v-wB-pB3" firstAttribute="leading" secondItem="6lO-yY-lOG" secondAttribute="leading" constant="349" id="muk-nO-7dG"/>
