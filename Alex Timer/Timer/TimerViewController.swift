@@ -63,7 +63,7 @@ class TimerViewContoller: UIViewController, UIPickerViewDataSource, UIPickerView
         } else if component == 4 {
             numberOfRows = seconds.count
         } else if component == 1 || component == 3 || component == 5 {
-            print("This is a label")
+          
         } else {
             print("error: couldn't get number of rows")
         }

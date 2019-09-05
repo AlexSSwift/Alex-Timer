@@ -36,6 +36,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="editButton:" destination="9mz-vZ-JaP" eventType="touchUpInside" id="woB-XD-xH1"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FZq-jP-xIG">
                                 <rect key="frame" x="0.0" y="84" width="414" height="729"/>
@@ -97,6 +100,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="alarmName" destination="Aej-Vf-0lB" id="l3I-6c-cBy"/>
+                                            <outlet property="alarmSwitch" destination="N9v-wB-pB3" id="ezF-JK-DnB"/>
                                             <outlet property="repeatWhenLabel" destination="8g8-Db-sNS" id="MC9-iR-xm7"/>
                                             <outlet property="timeLabel" destination="Gg5-Q4-cPZ" id="c0M-5Z-opp"/>
                                         </connections>
@@ -136,6 +140,7 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="alarmTableView" destination="FZq-jP-xIG" id="0e2-tE-TyF"/>
+                        <outlet property="editButtonProperties" destination="EO6-cR-q6Y" id="FYd-DO-PDD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1wQ-Ht-Atp" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -8,13 +8,28 @@
 
 import UIKit
 
-class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, SetAlarmResetDelegate {
+  
     @IBOutlet weak var repeatTableView: UITableView!
     
     var repeatClosure: (([Bool]) -> Void)!
-    
     let days = ["Every Sunday", "Every Monday", "Every Tuesday", "Every Wednesday", "Every Thursday", "Every Friday", "Every Saturday"]
     var daysChecked = [false, false, false, false, false, false, false]
+    let setAlarmVC = SetAlarmVC()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        repeatTableView.delegate = self
+        repeatTableView.dataSource = self
+       
+        setAlarmVC.setAlarmResetDelegate = self
+    }
+    
+    
+    func reset(reset: [Bool]) {
+        daysChecked = reset
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days.count
@@ -57,18 +72,10 @@ class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         daysChecked.insert(currentDay, at: indexPath.row)
         repeatTableView.reloadData()
     }
-    
-    
+  
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
         repeatClosure(daysChecked)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        repeatTableView.delegate = self
-        repeatTableView.dataSource = self
-    }
-    
+
 }

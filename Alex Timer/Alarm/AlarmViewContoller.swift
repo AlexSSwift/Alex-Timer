@@ -18,10 +18,18 @@ struct Alarm {
     let identifier: String
 }
 
-class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate {
-    
+protocol AlarmDelegate {
+    func editAlarm(time: Date, resetDays: [Bool], label: String)
+}
+
+class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmSwitchDelegate {
+  
+    @IBOutlet weak var editButtonProperties: UIButton!
     @IBOutlet weak var alarmTableView: UITableView!
+    enum edit {case edit, done}
+    var editButtonStatus: edit = edit.edit
     var alarms: [Alarm] = []
+    var alarmDelegate: AlarmDelegate!
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +38,10 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         alarmTableView.delegate = self
         alarmTableView.dataSource = self
         currentPendingNotifications()
-        //tempFunction()
+      //  deactivateAllAlarms()
     }
     
-    func tempFunction() {
+    func deactivateAllAlarms() {
     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
@@ -51,33 +59,36 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         completionHandler([.alert, .sound])
     }
    
-    func activateAlarm(alarms: [Alarm]) {
-        
+    func activateAlarms(alarms: [Alarm]) {
         for alarm in alarms {
-            if alarm.active == true {
-                let content = UNMutableNotificationContent()
-                content.title = "Now"
-                content.body = alarm.label
-                let calendar = Calendar.current
-                var resetStatus: Bool = false
-                for day in alarm.resetDays {
+            activateAlarm(alarm: alarm)
+        }
+    }
+    
+    func activateAlarm(alarm: Alarm) {
+        if alarm.active == true {
+            let content = UNMutableNotificationContent()
+            content.title = "Now"
+            content.body = alarm.label
+            let calendar = Calendar.current
+            var resetStatus: Bool = false
+            for day in alarm.resetDays {
+                if day == true {
+                    resetStatus = true
+                }
+            }
+            
+            if resetStatus == true {
+                for (index, day) in alarm.resetDays.enumerated() {
+                    var componentsFromDate = calendar.dateComponents([.hour, .minute], from: alarm.time)
                     if day == true {
-                        resetStatus = true
+                        componentsFromDate.weekday = index + 1
+                        alarmTrigger(identifier: alarm.identifier, content: content, dateComponents: componentsFromDate, reset: resetStatus)
                     }
                 }
-                
-                if resetStatus == true {
-                    for (index, day) in alarm.resetDays.enumerated() {
-                        var componentsFromDate = calendar.dateComponents([.hour, .minute], from: alarm.time)
-                        if day == true {
-                            componentsFromDate.weekday = index + 1
-                            alarmTrigger(identifier: alarm.identifier, content: content, dateComponents: componentsFromDate, reset: resetStatus)
-                        }
-                    }
-                } else if resetStatus == false {
-                    let componentsFromDate = calendar.dateComponents([.day, .hour, .minute], from: alarm.time)
-                    alarmTrigger(identifier: alarm.identifier, content: content, dateComponents: componentsFromDate, reset: resetStatus)
-                }
+            } else if resetStatus == false {
+                let componentsFromDate = calendar.dateComponents([.day, .hour, .minute], from: alarm.time)
+                alarmTrigger(identifier: alarm.identifier, content: content, dateComponents: componentsFromDate, reset: resetStatus)
             }
         }
     }
@@ -99,15 +110,26 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func alarmSwitch(on: Bool, whichCell: Int) {
+        if on != true {
+            cancelAlarm(whichAlarm: whichCell)
+        }
+        if on == true {
+            alarms[whichCell].active = true
+            activateAlarm(alarm: alarms[whichCell])
+        }
+    }
+    
     func cancelAlarm(whichAlarm: Int) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarms[whichAlarm].identifier])
         alarms[whichAlarm].active = false
     }
     
-    func addAlarm(date: Date, resetDays: [Bool], label: String, active: Bool, identifier: String) {
+    func addAlarms(date: Date, resetDays: [Bool], label: String, active: Bool, identifier: String) {
+        
         alarms.append(Alarm(time: date, resetDays: resetDays, label: label, active: active, identifier: identifier))
         alarmHandler.alarmsForDefault = alarms
-        activateAlarm(alarms: alarms)
+        activateAlarms(alarms: alarms)
         alarmTableView.reloadData()
         currentPendingNotifications()
     }
@@ -185,7 +207,7 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         }
 
         for defaultAlarm in defaultAlarms {
-            addAlarm(date: defaultAlarm["time"] as! Date, resetDays: defaultAlarm["reset"] as! [Bool], label: defaultAlarm["label"] as! String, active: defaultAlarm["active"] as! Bool, identifier: defaultAlarm["identifier"] as! String)
+            addAlarms(date: defaultAlarm["time"] as! Date, resetDays: defaultAlarm["reset"] as! [Bool], label: defaultAlarm["label"] as! String, active: defaultAlarm["active"] as! Bool, identifier: defaultAlarm["identifier"] as! String)
         }
         alarmTableView.reloadData()
     }
@@ -198,8 +220,9 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell") as! AlarmTableViewCell
         var alarmDict: [[String:String]] = parseAlarms(alarmArray: alarms)
         let cellTask = alarmDict[indexPath.row]
-        
+        cell.thisCell(index: indexPath.row)
         cell.setAlarmCell(time: cellTask["time"]!, repeatDays: cellTask["reset"]!, label: cellTask["label"]!)
+        cell.alarmSwitchDelegate = self
         return cell
     }
     
@@ -219,6 +242,18 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if editButtonStatus == edit.done {
+            let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "SetAlarmVC")
+            let setAlarmVC = viewController as! SetAlarmVC
+            let currentAlarm = alarms[indexPath.row]
+            alarmDelegate.editAlarm(time: currentAlarm.time, resetDays: currentAlarm.resetDays, label: currentAlarm.label)
+            
+            self.present(setAlarmVC, animated: true, completion: nil)
+        }
+    }
+    
     @IBAction func addAlarm(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "SetAlarmVC")
@@ -227,10 +262,33 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         self.present(setAlarmVC, animated: true, completion: nil)
         
         setAlarmVC.setAlarmClosure = {
-            self.addAlarm(date: $0, resetDays: $1, label: $2, active: $3, identifier: $4)
+            self.addAlarms(date: $0, resetDays: $1, label: $2, active: $3, identifier: $4)
             
         }
     }
+    
+    @IBAction func editButton(_ sender: UIButton) {
+        if editButtonStatus == edit.edit {
+            editButtonProperties.setTitle("Done", for: UIControl.State.normal)
+            for (index, _) in alarms.enumerated() {
+                let currentCell = IndexPath(row: index, section: 0)
+                let cell = alarmTableView.cellForRow(at: currentCell) as! AlarmTableViewCell
+                cell.alarmSwitch.isHidden = true
+            }
+            
+            editButtonStatus = edit.done
+        } else if editButtonStatus == edit.done {
+            editButtonProperties.setTitle("Edit", for: UIControl.State.normal)
+            for (index, _) in alarms.enumerated() {
+                let currentCell = IndexPath(row: index, section: 0)
+                let cell = alarmTableView.cellForRow(at: currentCell) as! AlarmTableViewCell
+                cell.alarmSwitch.isHidden = false
+            }
+            
+            editButtonStatus = edit.edit
+        }
+    }
+    
     
     
 }
