@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, SetAlarmResetDelegate {
+class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
   
     @IBOutlet weak var repeatTableView: UITableView!
     
@@ -23,14 +23,8 @@ class SetRepeatVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         repeatTableView.delegate = self
         repeatTableView.dataSource = self
        
-        setAlarmVC.setAlarmResetDelegate = self
     }
-    
-    
-    func reset(reset: [Bool]) {
-        daysChecked = reset
-    }
-    
+   
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days.count
     }

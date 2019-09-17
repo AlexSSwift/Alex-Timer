@@ -30,17 +30,29 @@ class TimerViewContoller: UIViewController, UIPickerViewDataSource, UIPickerView
     let minutes = Array(0...59)
     let seconds = Array(0...59)
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let pickerLabels: [Int:UILabel] = [1:hoursPickerLabel, 3: minutesPickerLabel, 5:secondsPickerLabel]
+        timerTimePicker.delegate = self
+        timerTimePicker.dataSource = self
+        timerTimePicker.setPickerLabels(labels: pickerLabels, containedView: self.view)
+        
+    }
+    
     @IBAction func startPauseResumeButtonPressed(_ sender: UIButton) {
         if currentHour == 0 && currentMinute == 0 && currentSecond == 0 {
             return
         } else {
             timeLabelView.isHidden = false
+            timerTimePicker.isHidden = true
             timerRun()
         }
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
         timer.invalidate()
+        timerTimePicker.isHidden = false
         timeLabelView.isHidden = true
         currentHour = hours[timerTimePicker.selectedRow(inComponent: 0)]
         currentMinute = minutes[timerTimePicker.selectedRow(inComponent: 2)]
@@ -63,48 +75,53 @@ class TimerViewContoller: UIViewController, UIPickerViewDataSource, UIPickerView
         } else if component == 4 {
             numberOfRows = seconds.count
         } else if component == 1 || component == 3 || component == 5 {
-          
+        //do nothing
         } else {
             print("error: couldn't get number of rows")
         }
         return numberOfRows
     }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        var numbers: String = ""
-        if component == 0 {
-            numbers = "\(hours[row])"
-        } else if component == 2 {
-            numbers = "\(minutes[row])"
-        } else if component == 4 {
-            numbers = "\(seconds[row])"
-        } else {
-            print("error: couldn't get data")
-        }
-        return numbers
-    }
-    
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         currentHour = hours[pickerView.selectedRow(inComponent: 0)]
         currentMinute = minutes[pickerView.selectedRow(inComponent: 2)]
         currentSecond = seconds[pickerView.selectedRow(inComponent: 4)]
         timeForTimeLabel()
     }
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        let pickerLabels: [Int:UILabel] = [1:hoursPickerLabel, 3: minutesPickerLabel, 5:secondsPickerLabel]
-        timerTimePicker.delegate = self
-        timerTimePicker.dataSource = self
-        timerTimePicker.setPickerLabels(labels: pickerLabels, containedView: self.view)
+
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        var numbers: String = ""
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white,
+        ]
+        var finalString: NSAttributedString!
+        
+        if component == 0 {
+            numbers = "\(hours[row])"
+           finalString = NSAttributedString(string: numbers, attributes: attributes)
+        } else if component == 2 {
+            numbers = "\(minutes[row])"
+             finalString = NSAttributedString(string: numbers, attributes: attributes)
+        } else if component == 4 {
+            numbers = "\(seconds[row])"
+           finalString = NSAttributedString(string: numbers, attributes: attributes)
+        } else {
+            print("error: couldn't get data")
+        }
+        return finalString
+
     }
     
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//        <#code#>
+//    }
+   
     func timeForTimeLabel() {
         let time = String(format: "%02d:%02d:%02d", self.currentHour, self.currentMinute, self.currentSecond)
+        timeLabel.backgroundColor = .black
         timeLabel.text = time
+        timeLabel.textColor = .white
     }
     
     func timerRun() {
@@ -160,7 +177,25 @@ class TimerViewContoller: UIViewController, UIPickerViewDataSource, UIPickerView
 
 
 }
-
+//extension UIPickerView {
+//
+//    func addPickerLabels(labels: [Int:UILabel], containtedView: UIView) {
+//
+//        let fontSize: CGFloat = 17
+//       // let LabelWidth: CGFloat =
+//        let x: CGFloat = self.frame.origin.x
+//        //let y: CGFloat =
+//
+//        let hours = labels[0]
+//        let minutes = labels[1]
+//        let seconds = labels[3]
+//
+//
+//
+//    }
+//
+//
+//}
 //
 //  PickerLabels.swift
 //  My Timer
@@ -168,12 +203,8 @@ class TimerViewContoller: UIViewController, UIPickerViewDataSource, UIPickerView
 //  Created by Luís Machado on 02/02/17.
 //  Copyright © 2017 LuisMachado. All rights reserved.
 //
-import Foundation
-import UIKit
-
 
 extension UIPickerView {
-    
     
     func setPickerLabels(labels: [Int:UILabel], containedView: UIView) { // [component number:label]
         
@@ -191,7 +222,7 @@ extension UIPickerView {
                 }
                 
                 label.frame = CGRect(x: x + labelWidth * CGFloat(i), y: y, width: labelWidth, height: fontSize)
-             
+                label.textColor = .white
                 label.backgroundColor = .clear
                 label.textAlignment = NSTextAlignment.center
                 

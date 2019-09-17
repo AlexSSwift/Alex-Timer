@@ -45,7 +45,7 @@ class StopwatchViewController: UIViewController {
         func timerRun() {
     
             if buttonStatus == startPauseResume.start {
-                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
+                timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
                 startButtonProperties.setTitle(_: "Pause", for: UIControl.State.normal)
                 buttonStatus = startPauseResume.pause
             } else if buttonStatus == startPauseResume.pause {
@@ -53,7 +53,7 @@ class StopwatchViewController: UIViewController {
                 startButtonProperties.setTitle(_: "Resume", for: UIControl.State.normal)
                 buttonStatus = startPauseResume.resume
             } else if buttonStatus == startPauseResume.resume {
-                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
+                timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(TimerViewContoller.action), userInfo: nil, repeats: true)
                 startButtonProperties.setTitle(_: "Pause", for: UIControl.State.normal)
                 buttonStatus = startPauseResume.pause
             }
@@ -75,6 +75,7 @@ class StopwatchViewController: UIViewController {
         }
         
         let time = String(format: "%02d:%02d:%02d", self.currentHour, self.currentMinute, self.currentSecond)
+    
         stopwatchTimeLabel.text = time
     }
  

@@ -27,9 +27,10 @@ class AlarmTableViewCell: UITableViewCell {
     var whichCell: Int = -1
     
     func setAlarmCell(time: String, repeatDays: String, label: String) {
+   
         timeLabel.text = time
-        repeatWhenLabel.text = repeatDays
-        alarmName.text = label
+       // repeatWhenLabel.text = repeatDays
+        alarmName.text = label + repeatDays
     }
     
     func thisCell(index:Int) {

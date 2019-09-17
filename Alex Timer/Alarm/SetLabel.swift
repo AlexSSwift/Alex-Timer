@@ -9,8 +9,10 @@
 import UIKit
 
 class SetLabelVC: UIViewController {
-
+    
     var setLabelClosure: ((String) -> Void)!
+    @IBOutlet weak var labelTextField: UITextField!
+    var label: String = ""
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
         guard let label = labelTextField.text else {
@@ -20,10 +22,10 @@ class SetLabelVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBOutlet weak var labelTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        labelTextField.text = label
     }
     
 }

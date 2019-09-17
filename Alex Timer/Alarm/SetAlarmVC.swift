@@ -8,35 +8,22 @@
 
 import UIKit
 
-protocol SetAlarmResetDelegate {
-    func reset(reset: [Bool])
-}
-
-class SetAlarmVC: UIViewController, AlarmDelegate {
-
+class SetAlarmVC: UIViewController {
+    
     @IBOutlet weak var alarmDatePicker: UIDatePicker!
     
-    var setAlarmClosure: (Date, [Bool], String, Bool, String) -> (Void) = {_,_,_,_,_  in
-    }
-
+    var setAlarmClosure: (Date, [Bool], String, Bool, String) -> (Void) = {_,_,_,_,_  in}
+    var editAlarmClosure: (Date, [Bool], String) -> (Void) = {_,_,_ in}
+    
+    let AlarmVC = AlarmViewContoller()
     var setDate: Date = Date()
     var setReset: [Bool] = [false, false, false, false, false, false, false]
     var setLabel: String = "Alarm"
-    let AlarmVC = AlarmViewContoller()
     var editingAlarm: Bool = false
-    var setAlarmResetDelegate: SetAlarmResetDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        AlarmVC.alarmDelegate = self
-    }
-    
-    func editAlarm(time: Date, resetDays: [Bool], label: String) {
-        editingAlarm = true
-        
-        alarmDatePicker.date = time
-        setReset = resetDays
-        setLabel = label
+        alarmDatePicker.date = setDate
     }
     
     @IBAction func saveButtonPressed(_ sender: Any) {
@@ -47,7 +34,7 @@ class SetAlarmVC: UIViewController, AlarmDelegate {
             let setIdentifier = UUID().uuidString
             setAlarmClosure(setDate, setReset, setLabel, setActive, setIdentifier)
         } else {
-            
+            editAlarmClosure(setDate, setReset, setLabel)
         }
         
         self.dismiss(animated: true, completion: nil)
@@ -62,7 +49,8 @@ class SetAlarmVC: UIViewController, AlarmDelegate {
         let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "SetRepeatVC")
         let setRepeatVC = viewController as! SetRepeatVC
-        setAlarmResetDelegate.reset(reset: self.setReset)
+        setRepeatVC.daysChecked = setReset
+        
         self.present(setRepeatVC, animated: true, completion: nil)
         setRepeatVC.repeatClosure = {
             self.setReset = $0
@@ -73,7 +61,7 @@ class SetAlarmVC: UIViewController, AlarmDelegate {
         let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "SetLabelVC")
         let setLabelVC = viewController as! SetLabelVC
-    
+        setLabelVC.label = setLabel
         self.present(setLabelVC, animated: true, completion: nil)
         setLabelVC.setLabelClosure = {
             self.setLabel = $0

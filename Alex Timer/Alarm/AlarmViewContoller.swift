@@ -18,10 +18,6 @@ struct Alarm {
     let identifier: String
 }
 
-protocol AlarmDelegate {
-    func editAlarm(time: Date, resetDays: [Bool], label: String)
-}
-
 class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmSwitchDelegate {
   
     @IBOutlet weak var editButtonProperties: UIButton!
@@ -29,16 +25,17 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
     enum edit {case edit, done}
     var editButtonStatus: edit = edit.edit
     var alarms: [Alarm] = []
-    var alarmDelegate: AlarmDelegate!
+
    
     override func viewDidLoad() {
         super.viewDidLoad()
         UNUserNotificationCenter.current().delegate = self
+        deactivateAllAlarms()
         retrieveDefaultAlarms()
         alarmTableView.delegate = self
         alarmTableView.dataSource = self
         currentPendingNotifications()
-      //  deactivateAllAlarms()
+     // deactivateAllAlarms()
     }
     
     func deactivateAllAlarms() {
@@ -65,11 +62,30 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.actionIdentifier == "reset" {
+            
+        } else {
+            
+        }
+        
+        completionHandler()
+    }
+    
     func activateAlarm(alarm: Alarm) {
         if alarm.active == true {
+            
+            let deactivateAlarm = UNNotificationAction(identifier: "deactivate", title: "OK", options: UNNotificationActionOptions.foreground)
+            let resetAlarm = UNNotificationAction(identifier: "reset", title: "Reset Alarm", options: UNNotificationActionOptions.foreground)
+            
+            let category = UNNotificationCategory(identifier: "myCategory", actions: [resetAlarm, deactivateAlarm], intentIdentifiers: [], options: [])
+            UNUserNotificationCenter.current().setNotificationCategories([category])
+            
             let content = UNMutableNotificationContent()
             content.title = "Now"
             content.body = alarm.label
+            content.categoryIdentifier = "myCategory"
+            content.sound = UNNotificationSound.default
             let calendar = Calendar.current
             var resetStatus: Bool = false
             for day in alarm.resetDays {
@@ -148,9 +164,10 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         return returnDictArray
     }
     
-    func parseRepeats(repeatArray: [Bool]) -> [String] {
+    func parseRepeats(repeatArray: [Bool]) -> String {
         var weekdays: [String] = []
-        var weekday = 0
+        var weekday: Int = 0
+        var repeatDays: String = ""
         func switchWeekdays(weekday: Int) -> String {
             switch weekday {
             case 0:
@@ -178,7 +195,15 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
                 weekdays.append(switchedDays)
             }
         }
-        return weekdays
+        for (index, day) in weekdays.enumerated(){
+            if index > 0 {
+                 repeatDays += ", " + day
+            } else {
+                repeatDays += day
+            }
+        }
+        
+        return repeatDays
     }
     
     func repeatToDateComponent(repeatArray: [Bool]) -> [DateComponents] {
@@ -211,7 +236,19 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         }
         alarmTableView.reloadData()
     }
-  
+    
+    func editAlarm(whichAlarm: Int, date: Date, resetDays: [Bool], label: String) {
+        cancelAlarm(whichAlarm: whichAlarm)
+        
+        alarms[whichAlarm].time = date
+        alarms[whichAlarm].resetDays = resetDays
+        alarms[whichAlarm].label = label
+        alarms[whichAlarm].active = true
+        
+        activateAlarm(alarm: alarms[whichAlarm])
+        alarmTableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return alarms.count
     }
@@ -223,6 +260,11 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
         cell.thisCell(index: indexPath.row)
         cell.setAlarmCell(time: cellTask["time"]!, repeatDays: cellTask["reset"]!, label: cellTask["label"]!)
         cell.alarmSwitchDelegate = self
+        
+        if alarms[indexPath.row].active == false {
+            cell.alarmSwitch.isOn = false
+        }
+        
         return cell
     }
     
@@ -245,12 +287,26 @@ class AlarmViewContoller: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if editButtonStatus == edit.done {
             let storyboard = UIStoryboard(name: "Alarm", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "SetAlarmVC")
-            let setAlarmVC = viewController as! SetAlarmVC
+            let setAlarmVC = storyboard.instantiateViewController(withIdentifier: "SetAlarmVC") as! SetAlarmVC
             let currentAlarm = alarms[indexPath.row]
-            alarmDelegate.editAlarm(time: currentAlarm.time, resetDays: currentAlarm.resetDays, label: currentAlarm.label)
+            
+            setAlarmVC.setDate = currentAlarm.time
+            setAlarmVC.setReset = currentAlarm.resetDays
+            setAlarmVC.setLabel = currentAlarm.label
+            setAlarmVC.editingAlarm = true
             
             self.present(setAlarmVC, animated: true, completion: nil)
+            
+            setAlarmVC.editAlarmClosure = {
+                self.editAlarm(whichAlarm: indexPath.row, date: $0, resetDays: $1, label: $2)
+            }
+            editButtonProperties.setTitle("Edit", for: UIControl.State.normal)
+            for (index, _) in alarms.enumerated() {
+                let currentCell = IndexPath(row: index, section: 0)
+                let cell = alarmTableView.cellForRow(at: currentCell) as! AlarmTableViewCell
+                cell.alarmSwitch.isHidden = false
+            }
+            editButtonStatus = edit.edit
         }
     }
     
